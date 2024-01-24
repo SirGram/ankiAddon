@@ -1,15 +1,15 @@
 from aqt import mw
 from aqt.utils import showInfo, qconnect
 from aqt.qt import *
-import requests
+from anki.hooks import addHook
 
+import requests
 
 tag = 'yomichan'
 field_word = 1
 field_number = 10
 field_noken = 11
 force_search = True
-
 
 def updateFieldForTaggedCards() -> None:
     # Get all cards with a specific note type in the current deck
@@ -41,7 +41,7 @@ def get_jisho_data(keyword):
             except:
                 noken = noken
         except:
-            noken = 'N-Un'      
+            noken = 'NU'      
         return noken
     except requests.exceptions.RequestException as e:
         showInfo(f"Error: {e}")
@@ -50,3 +50,6 @@ def get_jisho_data(keyword):
 action = QAction("Update number and search noken", mw)
 qconnect(action.triggered, updateFieldForTaggedCards)
 mw.form.menuTools.addAction(action)
+
+addHook('profileLoaded', updateFieldForTaggedCards)
+
