@@ -9,7 +9,7 @@ tag = 'yomichan'
 field_word = 1
 field_number = 10
 field_noken = 11
-force_search = True
+force_search = False
 
 def updateFieldForTaggedCards() -> None:
     # Get all cards with a specific note type in the current deck
@@ -21,7 +21,7 @@ def updateFieldForTaggedCards() -> None:
             note = card.note()
             note.fields[field_number] = str(index + 1)
             # Get noken
-            if note.fields[field_noken] or force_search=='':
+            if note.fields[field_noken]=='' or force_search==True:
                 keyword = note.fields[field_word]
                 note.fields[field_noken] = get_jisho_data(keyword)
             note.flush()  
